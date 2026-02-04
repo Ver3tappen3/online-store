@@ -26,3 +26,42 @@ function renderProducts() {
 }
 
 renderProducts();
+
+function getQueryParam(name) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+
+function renderProductPage() {
+  const root = document.getElementById("productView");
+  if (!root || typeof products === "undefined") return;
+
+  const id = Number(getQueryParam("id"));
+  const product = products.find((p) => p.id === id);
+
+  if (!product) {
+    root.innerHTML = `<div class="alert alert-danger">Товар не найден</div>`;
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="row g-4">
+      <div class="col-12 col-md-6">
+        <img src="${product.image}" alt="${product.title}" class="img-fluid rounded border">
+      </div>
+
+      <div class="col-12 col-md-6">
+        <h1 class="mb-2">${product.title}</h1>
+        <p class="text-muted">${product.description}</p>
+        <div class="fs-4 fw-bold mb-3">${product.price.toLocaleString()} ₸</div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-success" id="addToCartBtn">В корзину</button>
+          <button class="btn btn-outline-danger" id="addToFavBtn">В избранное</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+renderProductPage();
