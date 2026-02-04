@@ -43,11 +43,13 @@ function footerTemplate() {
   `;
 }
 
-function mountLayout() {
-  const headerRoot = document.getElementById("app-header");
-  const footerRoot = document.getElementById("app-footer");
-  if (headerRoot) headerRoot.innerHTML = headerTemplate();
-  if (footerRoot) footerRoot.innerHTML = footerTemplate();
+function updateHeaderCounts() {
+  const cartEl = document.getElementById("cartCount");
+  const favEl = document.getElementById("favCount");
+
+  if (cartEl && typeof getCartCount === "function") cartEl.textContent = String(getCartCount());
+  if (favEl && typeof getFavCount === "function") favEl.textContent = String(getFavCount());
 }
 
-mountLayout();
+updateHeaderCounts();
+
