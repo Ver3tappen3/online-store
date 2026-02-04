@@ -17,9 +17,7 @@ function headerTemplate() {
         <a href="cart.html" class="text-decoration-none text-dark">
           🛒 <span id="cartCount">0</span>
         </a>
-        <button id="themeBtn" class="btn btn-outline-secondary btn-sm" type="button">
-          🌙
-        </button>
+        <button id="themeBtn" class="btn btn-outline-secondary btn-sm" type="button">🌙</button>
       </div>
     </nav>
   </header>
@@ -43,13 +41,21 @@ function footerTemplate() {
   `;
 }
 
+function mountLayout() {
+  const headerRoot = document.getElementById("app-header");
+  const footerRoot = document.getElementById("app-footer");
+
+  if (headerRoot) headerRoot.innerHTML = headerTemplate();
+  if (footerRoot) footerRoot.innerHTML = footerTemplate();
+}
+
 function updateHeaderCounts() {
   const cartEl = document.getElementById("cartCount");
   const favEl = document.getElementById("favCount");
 
-  if (cartEl && typeof getCartCount === "function") cartEl.textContent = String(getCartCount());
-  if (favEl && typeof getFavCount === "function") favEl.textContent = String(getFavCount());
+  if (cartEl) cartEl.textContent = String(getCartCount());
+  if (favEl) favEl.textContent = String(getFavCount());
 }
 
+mountLayout();
 updateHeaderCounts();
-

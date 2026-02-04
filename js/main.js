@@ -25,18 +25,12 @@ function renderProducts() {
     .join("");
 }
 
-renderProducts();
-
-function getQueryParam(name) {
-  const params = new URLSearchParams(window.location.search);
-  return params.get(name);
-}
-
+// ===== Товар (product.html) =====
 function renderProductPage() {
   const root = document.getElementById("productView");
   if (!root || typeof products === "undefined") return;
 
-  const id = Number(getQueryParam("id"));
+  const id = Number(new URLSearchParams(window.location.search).get("id"));
   const product = products.find((p) => p.id === id);
 
   if (!product) {
@@ -62,6 +56,29 @@ function renderProductPage() {
       </div>
     </div>
   `;
+
+  const cartBtn = document.getElementById("addToCartBtn");
+  const favBtn = document.getElementById("addToFavBtn");
+
+  if (!cartBtn || !favBtn) return;
+
+  favBtn.textContent = isFavorite(product.id) ? "Убрать из избранного" : "В избранное";
+
+  cartBtn.addEventListener("click", () => {
+    addToCart(product.id, 1);
+    if (typeof updateHeaderCounts === "function") updateHeaderCounts();
+    alert("Добавлено в корзину ✅");
+  });
+
+  favBtn.addEventListener("click", () => {
+    toggleFavorite(product.id);
+    favBtn.textContent = isFavorite(product.id) ? "Убрать из избранного" : "В избранное";
+    if (typeof updateHeaderCounts === "function") updateHeaderCounts();
+  });
 }
 
-renderProductPage();
+// ===== Запуск после загрузки DOM =====
+document.addEventListener("DOMContentLoaded", () => {
+  renderProducts();
+  renderProductPage();
+});

@@ -37,3 +37,27 @@ function setFavorites(favs) {
 function getFavCount() {
   return getFavorites().length;
 }
+
+function addToCart(id, qty = 1) {
+  const cart = getCart();
+  const item = cart.find((x) => x.id === id);
+
+  if (item) item.qty += qty;
+  else cart.push({ id, qty });
+
+  setCart(cart);
+}
+
+function toggleFavorite(id) {
+  const favs = getFavorites();
+  const index = favs.indexOf(id);
+
+  if (index >= 0) favs.splice(index, 1);
+  else favs.push(id);
+
+  setFavorites(favs);
+}
+
+function isFavorite(id) {
+  return getFavorites().includes(id);
+}
