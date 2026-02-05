@@ -126,3 +126,17 @@ function removeFromFavorites(id) {
   renderFavoritesPage();
 }
 
+function initContactForm() {
+  const form = document.getElementById("contactForm");
+  if (!form) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    alert("Сообщение отправлено (учебный проект) ✅");
+    form.reset();
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initContactForm();
+});
