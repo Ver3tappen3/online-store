@@ -59,3 +59,10 @@ function updateHeaderCounts() {
 
 mountLayout();
 updateHeaderCounts();
+
+const themeBtn = document.getElementById("themeBtn");
+if (themeBtn) {
+  themeBtn.addEventListener("click", () => {
+    if (typeof toggleTheme === "function") toggleTheme();
+  });
+}
