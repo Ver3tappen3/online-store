@@ -25,7 +25,6 @@ function renderProducts() {
     .join("");
 }
 
-// ===== Товар (product.html) =====
 function renderProductPage() {
   const root = document.getElementById("productView");
   if (!root || typeof products === "undefined") return;
@@ -77,8 +76,53 @@ function renderProductPage() {
   });
 }
 
-// ===== Запуск после загрузки DOM =====
 document.addEventListener("DOMContentLoaded", () => {
   renderProducts();
   renderProductPage();
+  renderCartPage();
+  renderFavoritesPage();
 });
+
+
+function renderFavoritesPage() {
+  const list = document.getElementById("favoritesList");
+  if (!list || typeof products === "undefined") return;
+
+  const favs = getFavorites();
+
+  if (favs.length === 0) {
+    list.innerHTML = `<p>Избранное пусто</p>`;
+    return;
+  }
+
+  list.innerHTML = favs
+    .map((id) => {
+      const p = products.find((x) => x.id === id);
+      if (!p) return "";
+
+      return `
+        <div class="card mb-3">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="mb-1">${p.title}</h5>
+              <small class="text-muted">${p.price.toLocaleString()} ₸</small>
+            </div>
+
+            <div class="d-flex gap-2">
+              <a class="btn btn-sm btn-primary" href="product.html?id=${p.id}">Открыть</a>
+              <button class="btn btn-sm btn-outline-danger" onclick="removeFromFavorites(${p.id})">Удалить</button>
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function removeFromFavorites(id) {
+  const favs = getFavorites().filter((x) => x !== id);
+  setFavorites(favs);
+  if (typeof updateHeaderCounts === "function") updateHeaderCounts();
+  renderFavoritesPage();
+}
+
